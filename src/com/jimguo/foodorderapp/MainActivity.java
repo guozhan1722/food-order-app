@@ -2,6 +2,7 @@ package com.jimguo.foodorderapp;
 
 import redis.clients.jedis.Jedis;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ public class MainActivity extends Activity {
 	public Thread jedisThread;
 	public String val;
 	public Jedis jedis;
+	public Button buttonNext;
 	
 	public class JedisRunnable implements Runnable {
 		@Override
@@ -47,17 +49,36 @@ public class MainActivity extends Activity {
 		}
     	
     }
+    
+    class ButtonNextListerner implements OnClickListener{
+
+		@Override
+		public void onClick(View v) {
+			System.out.println("go to next activity");
+			Intent intent = new Intent();
+			//send data to next Activity
+			intent.putExtra("com.jimguo.foodorderapp.MyAge", 46);
+			intent.setClass(MainActivity.this, SecondActivity.class);
+			startActivity(intent);
+			
+		}
+    	
+    }
 
 	protected void init()
 	{
         textView = (TextView)findViewById(R.id.textView1);
         button = (Button)findViewById(R.id.button1);
         editText = (EditText)findViewById(R.id.editText1);
+        buttonNext = (Button)findViewById(R.id.button2);
         jedis = new Jedis("192.168.216.114");
         
         
         OnClickListener buttonListener = new ButtonListener();
         button.setOnClickListener(buttonListener);
+        
+        OnClickListener buttonNextClickListener = new ButtonNextListerner();
+        buttonNext.setOnClickListener(buttonNextClickListener);
         
 	}
 	
